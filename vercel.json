@@ -2,11 +2,6 @@
   "version": 2,
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/build",
-  "env": {
-    "REACT_APP_API_URL": "@api_url",
-    "MONGO_URI": "@mongo_uri",
-    "JWT_SECRET": "@jwt_secret"
-  },
   "functions": {
     "backend/server.js": {
       "runtime": "nodejs18.x",
