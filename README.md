@@ -49,11 +49,24 @@ A full-stack web application that provides AI-powered financial advice, EMI calc
 │ └── package.json
 └── README.md
 
+## Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/vkumar2708/Demo.git
+   cd Demo
+
 Backend Setup
+cd backend
+npm install
+node server.js
 
 Server runs on http://localhost:5000
 
 Frontend Setup
+cd frontend
+npm install
+npm start
 
 App runs on http://localhost:3000
 
