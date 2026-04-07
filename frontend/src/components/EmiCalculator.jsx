@@ -15,7 +15,7 @@ export default function EmiCalculator({ setEmiData }) {
   const [years, setYears] = useState(5);
   const [emi, setEmi] = useState(0);
   const [schedule, setSchedule] = useState([]);
-  const [summary, setSummary] = useState({ emi: 0, months: 0, totalPayment: 0, totalInterest: 0, outstanding: 0 });
+  const [summary, setSummary] = useState({ emi: 0, months: 0, totalPayment: 0, totalInterest: 0 });
   const [selectedMonth, setSelectedMonth] = useState(1);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function EmiCalculator({ setEmiData }) {
     if (!principal || !monthlyRate || !months) {
       setEmi(0);
       setSchedule([]);
-      setSummary({ emi: 0, months: 0, totalPayment: 0, totalInterest: 0, outstanding: 0 });
+      setSummary({ emi: 0, months: 0, totalPayment: 0, totalInterest: 0 });
       setSelectedMonth(1);
       setEmiData?.({ emi: 0, months: 0, totalPayment: 0, totalInterest: 0, loan: principal, rate: annualRate, years: yearsCount });
       return;
@@ -66,7 +66,6 @@ export default function EmiCalculator({ setEmiData }) {
       months,
       totalPayment,
       totalInterest: Number(totalInterest.toFixed(0)),
-      outstanding: Number(rows[months - 1]?.outstanding.toFixed(0) || 0),
     });
     setSelectedMonth(prev => Math.min(Math.max(prev, 1), months));
     setEmiData?.({
@@ -74,7 +73,6 @@ export default function EmiCalculator({ setEmiData }) {
       months,
       totalPayment,
       totalInterest: Number(totalInterest.toFixed(0)),
-      outstanding: Number(rows[months - 1]?.outstanding.toFixed(0) || 0),
       loan: principal,
       rate: annualRate,
       years: yearsCount,
@@ -93,9 +91,9 @@ export default function EmiCalculator({ setEmiData }) {
   const downloadSchedule = () => {
     if (!schedule.length) return;
 
-    const header = ["Month", "EMI", "Principal", "Interest", "Outstanding"].join(",");
+    const header = ["Month", "EMI", "Principal", "Interest"].join(",");
     const rows = schedule
-      .map(row => [row.month, row.emi, row.principal.toFixed(0), row.interest.toFixed(0), row.outstanding.toFixed(0)].join(","))
+      .map(row => [row.month, row.emi, row.principal.toFixed(0), row.interest.toFixed(0)].join(","))
       .join("\n");
 
     const blob = new Blob([header + "\n" + rows], { type: "text/csv;charset=utf-8;" });
@@ -161,10 +159,6 @@ export default function EmiCalculator({ setEmiData }) {
         <div className="summary-card">
           <span>Total interest</span>
           <strong>{formatCurrency(summary.totalInterest)}</strong>
-        </div>
-        <div className="summary-card">
-          <span>Outstanding after term</span>
-          <strong>{formatCurrency(summary.outstanding)}</strong>
         </div>
       </div>
 
@@ -237,7 +231,6 @@ export default function EmiCalculator({ setEmiData }) {
                 <th>EMI</th>
                 <th>Principal</th>
                 <th>Interest</th>
-                <th>Outstanding</th>
               </tr>
             </thead>
             <tbody>
@@ -247,7 +240,6 @@ export default function EmiCalculator({ setEmiData }) {
                   <td>{formatCurrency(row.emi)}</td>
                   <td>{formatCurrency(Number(row.principal.toFixed(0)))}</td>
                   <td>{formatCurrency(Number(row.interest.toFixed(0)))}</td>
-                  <td>{formatCurrency(Number(row.outstanding.toFixed(0)))}</td>
                 </tr>
               ))}
             </tbody>
