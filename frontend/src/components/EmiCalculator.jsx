@@ -13,7 +13,6 @@ export default function EmiCalculator({ setEmiData }) {
   const [loan, setLoan] = useState(500000);
   const [rate, setRate] = useState(8);
   const [years, setYears] = useState(5);
-  const [emi, setEmi] = useState(0);
   const [schedule, setSchedule] = useState([]);
   const [summary, setSummary] = useState({ emi: 0, months: 0, totalPayment: 0, totalInterest: 0 });
   const [selectedMonth, setSelectedMonth] = useState(1);
@@ -60,7 +59,6 @@ export default function EmiCalculator({ setEmiData }) {
 
     const totalPayment = emiValue * months;
     setSchedule(rows);
-    setEmi(emiValue);
     setSummary({
       emi: emiValue,
       months,
@@ -80,7 +78,6 @@ export default function EmiCalculator({ setEmiData }) {
   }, [loan, rate, years, setEmiData]);
 
   const monthDetails = schedule[selectedMonth - 1] || { principal: 0, interest: 0, outstanding: 0 };
-  const principalPaidTotal = summary.totalPayment - summary.totalInterest;
   const pieData = [
     { name: "Principal", value: principalPaidTotal },
     { name: "Interest", value: summary.totalInterest },

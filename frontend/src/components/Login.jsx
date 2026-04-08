@@ -35,7 +35,7 @@ export default function Login({ setUser }) {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${apiUrl}/api/auth/register`, {
+      await axios.post(`${apiUrl}/api/auth/register`, {
         email,
         password,
       });
