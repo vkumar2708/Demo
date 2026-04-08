@@ -2,6 +2,7 @@
   "extends": ["react-app"],
   "rules": {
     "no-unused-vars": "warn",
-    "unicode-bom": "off"
+    "unicode-bom": "off",
+    "no-restricted-globals": "warn"
   }
 }
