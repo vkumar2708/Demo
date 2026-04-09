@@ -80,7 +80,6 @@ export default function EmiCalculator({ setEmiData }) {
     });
   }, [loan, rate, years, setEmiData]);
 
-  const monthDetails = schedule[selectedMonth - 1] || { principal: 0, interest: 0, outstanding: 0 };
   const principalPaidTotal = summary.totalPayment - summary.totalInterest;
   const pieData = [
     { name: "Principal", value: principalPaidTotal },
