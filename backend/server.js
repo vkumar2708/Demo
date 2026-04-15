@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
-require("dotenv").config();
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 const frontendBuildPath = path.join(__dirname, "..", "frontend", "build");
@@ -17,12 +17,17 @@ app.use("/api/history", require("./routes/history"));
 app.use("/api/ai", require("./routes/ai"));
 
 // DB Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => {
-    console.warn("MongoDB connection error:", err.message);
-    console.warn("Server will continue running without database for now");
-  });
+if (process.env.MONGO_URI) {
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("MongoDB Connected"))
+    .catch(err => {
+      console.warn("MongoDB connection error:", err.message);
+      console.warn("Server will continue running without database for now");
+    });
+} else {
+  console.warn("MONGO_URI is not set. Configure it in Render Environment variables.");
+  console.warn("Server will continue running without database for now");
+}
 
 // Root test
 app.get("/", (req, res) => {
