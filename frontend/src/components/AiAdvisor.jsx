@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { MdAutoAwesome } from "react-icons/md";
+import { apiBaseUrl } from "../apiBaseUrl";
 
 export default function AiAdvisor() {
   const [income, setIncome] = useState("");
@@ -8,8 +9,7 @@ export default function AiAdvisor() {
   const [advice, setAdvice] = useState("");
 
   const getAdvice = async () => {
-    const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
-    const res = await axios.post(`${apiUrl}/api/ai`, {
+    const res = await axios.post(`${apiBaseUrl}/api/ai`, {
       income,
       expense,
     });

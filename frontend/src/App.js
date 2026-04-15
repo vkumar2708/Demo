@@ -1,13 +1,22 @@
 ﻿import { useState } from "react";
 import Login from "./components/Login";
+import { useEffect } from "react";
 import EmiCalculator from "./components/EmiCalculator";
 import SipCalculator from "./components/SipCalculator";
 import EmiVsSipComparison from "./components/EmiVsSipComparison";
 import AiAdvisor from "./components/AiAdvisor";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { MdDashboard } from "react-icons/md";
 
 function App() {
   const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userId");
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
 
   return (
     <div className="app-shell">
@@ -33,12 +42,20 @@ function App() {
           </header>
 
           <div className="grid-two">
-            <EmiCalculator />
-            <SipCalculator />
+            <ErrorBoundary>
+              <EmiCalculator />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <SipCalculator />
+            </ErrorBoundary>
           </div>
 
-          <EmiVsSipComparison />
-          <AiAdvisor />
+          <ErrorBoundary>
+            <EmiVsSipComparison />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <AiAdvisor />
+          </ErrorBoundary>
         </div>
       )}
     </div>

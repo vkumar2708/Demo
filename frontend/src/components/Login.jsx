@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { apiBaseUrl } from "../apiBaseUrl";
 
 export default function Login({ setUser }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,8 +13,6 @@ export default function Login({ setUser }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  const [apiUrl] = useState(process.env.REACT_APP_API_URL || "http://localhost:5000");
-
   const register = async () => {
     setError("");
     setSuccess("");
@@ -35,7 +34,7 @@ export default function Login({ setUser }) {
 
     setLoading(true);
     try {
-      await axios.post(`${apiUrl}/api/auth/register`, {
+      await axios.post(`${apiBaseUrl}/api/auth/register`, {
         email,
         password,
       });
@@ -45,7 +44,7 @@ export default function Login({ setUser }) {
       setConfirmPassword("");
       setTimeout(() => setIsLogin(true), 2000);
     } catch (err) {
-      setError(err.response?.data || "Registration failed. Please try again.");
+      setError(err.response?.data?.message || err.response?.data || "Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -62,7 +61,7 @@ export default function Login({ setUser }) {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${apiUrl}/api/auth/login`, {
+      const res = await axios.post(`${apiBaseUrl}/api/auth/login`, {
         email,
         password,
       });
@@ -70,7 +69,7 @@ export default function Login({ setUser }) {
       localStorage.setItem("token", res.data.token);
       setUser(res.data.userId);
     } catch (err) {
-      setError(err.response?.data || "Login failed. Please check your credentials.");
+      setError(err.response?.data?.message || err.response?.data || "Login failed. Please check your credentials.");
     } finally {
       setLoading(false);
     }
