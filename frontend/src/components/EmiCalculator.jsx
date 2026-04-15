@@ -13,11 +13,8 @@ export default function EmiCalculator({ setEmiData }) {
   const [loan, setLoan] = useState(500000);
   const [rate, setRate] = useState(8);
   const [years, setYears] = useState(5);
-  // eslint-disable-next-line no-unused-vars
-  // const [emi, setEmi] = useState(0);
   const [schedule, setSchedule] = useState([]);
   const [summary, setSummary] = useState({ emi: 0, months: 0, totalPayment: 0, totalInterest: 0 });
-  // const [selectedMonth, setSelectedMonth] = useState(1);
 
   useEffect(() => {
     const principal = Number(loan) || 0;
@@ -27,10 +24,8 @@ export default function EmiCalculator({ setEmiData }) {
     const monthlyRate = annualRate / 12 / 100;
 
     if (!principal || !monthlyRate || !months) {
-      setEmi(0);
       setSchedule([]);
       setSummary({ emi: 0, months: 0, totalPayment: 0, totalInterest: 0 });
-      // setSelectedMonth(1);
       setEmiData?.({ emi: 0, months: 0, totalPayment: 0, totalInterest: 0, loan: principal, rate: annualRate, years: yearsCount });
       return;
     }
@@ -61,14 +56,12 @@ export default function EmiCalculator({ setEmiData }) {
 
     const totalPayment = emiValue * months;
     setSchedule(rows);
-    setEmi(emiValue);
     setSummary({
       emi: emiValue,
       months,
       totalPayment,
       totalInterest: Number(totalInterest.toFixed(0)),
     });
-    // setSelectedMonth(prev => Math.min(Math.max(prev, 1), months));
     setEmiData?.({
       emi: emiValue,
       months,
