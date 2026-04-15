@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "Full-stack financial advisory platform",
   "scripts": {
-    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\"",
-    "build": "cd frontend && npm run build",
-    "start": "cd backend && npm start"
+    "postinstall": "npm install --prefix backend && npm install --prefix frontend",
+    "install-all": "npm install && npm run postinstall",
+    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend start\"",
+    "build": "npm --prefix frontend run build",
+    "start": "node backend/server.js"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"
