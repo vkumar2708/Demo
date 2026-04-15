@@ -6,19 +6,28 @@ require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 const frontendBuildPath = path.join(__dirname, "..", "frontend", "build");
+mongoose.set("bufferCommands", false);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
+const requireDatabase = (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ message: "Database unavailable. Check MONGO_URI and MongoDB Atlas network access." });
+  }
+
+  return next();
+};
+
 // Routes
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/history", require("./routes/history"));
+app.use("/api/auth", requireDatabase, require("./routes/auth"));
+app.use("/api/history", requireDatabase, require("./routes/history"));
 app.use("/api/ai", require("./routes/ai"));
 
 // DB Connection
 if (process.env.MONGO_URI) {
-  mongoose.connect(process.env.MONGO_URI)
+  mongoose.connect(process.env.MONGO_URI, { serverSelectionTimeoutMS: 10000 })
     .then(() => console.log("MongoDB Connected"))
     .catch(err => {
       console.warn("MongoDB connection error:", err.message);
